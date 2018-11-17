@@ -1,6 +1,6 @@
 package org.hackusu.aisnakeserver.manager;
 
-import org.hackusu.aisnakeserver.entity.Entity;
+import me.braysen.goodwin.game.entities.Entity;
 
 import java.util.ArrayList;
 

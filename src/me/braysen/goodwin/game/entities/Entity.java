@@ -1,4 +1,4 @@
-package org.hackusu.aisnakeserver.entity;
+package me.braysen.goodwin.game.entities;
 
 import java.io.Serializable;
 import java.util.UUID;

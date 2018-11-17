@@ -1,6 +1,6 @@
-package org.hackusu.aisnakeserver.packet;
+package me.braysen.goodwin.network.packet;
 
-import org.hackusu.aisnakeserver.entity.Food;
+import me.braysen.goodwin.game.entities.Food;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

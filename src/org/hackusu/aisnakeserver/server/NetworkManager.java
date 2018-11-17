@@ -1,7 +1,7 @@
 package org.hackusu.aisnakeserver.server;
 
+import me.braysen.goodwin.network.packet.PacketSnake;
 import org.hackusu.aisnakeserver.manager.EntityManager;
-import org.hackusu.aisnakeserver.packet.PacketServerUpdate;
 
 import java.util.ArrayList;
 
@@ -25,8 +25,10 @@ public class NetworkManager {
 
     public void updateClients() {
         for (ClientConnection clientConnection : clientConnections) {
-            PacketServerUpdate packetServerUpdate = new PacketServerUpdate(entityManager.getEntities());
-            clientConnection.writePacket(packetServerUpdate);
+            for (ClientConnection clientConnection1 : clientConnections) {
+                PacketSnake packetServerUpdate = new PacketSnake(clientConnection1.getClientSnake());
+                clientConnection.writePacket(packetServerUpdate);
+            }
         }
     }
 

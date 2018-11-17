@@ -1,4 +1,4 @@
-package org.hackusu.aisnakeserver.entity;
+package me.braysen.goodwin.game.entities;
 
 import java.awt.Color;
 import java.awt.Point;

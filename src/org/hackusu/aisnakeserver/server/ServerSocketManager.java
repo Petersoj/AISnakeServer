@@ -11,7 +11,6 @@ public class ServerSocketManager extends Thread {
     private ServerSocket serverSocket;
 
     public ServerSocketManager(NetworkManager networkManager, int port) {
-        super();
         this.networkManager = networkManager;
         this.port = port;
     }

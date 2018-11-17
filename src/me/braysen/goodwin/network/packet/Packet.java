@@ -1,4 +1,4 @@
-package org.hackusu.aisnakeserver.packet;
+package me.braysen.goodwin.network.packet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

@@ -1,9 +1,9 @@
 package org.hackusu.aisnakeserver.server;
 
-import org.hackusu.aisnakeserver.entity.Entity;
-import org.hackusu.aisnakeserver.entity.Snake;
-import org.hackusu.aisnakeserver.packet.Packet;
-import org.hackusu.aisnakeserver.packet.PacketServerUpdate;
+import me.braysen.goodwin.game.entities.Entity;
+import me.braysen.goodwin.game.entities.Snake;
+import me.braysen.goodwin.network.packet.Packet;
+import me.braysen.goodwin.network.packet.PacketSnake;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,12 +19,12 @@ public class ClientConnection extends Thread {
     private Socket socket;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
+    private Snake clientSnake;
 
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
 
     public ClientConnection(NetworkManager networkManager, Socket socket) {
-        super();
         this.networkManager = networkManager;
         this.socket = socket;
         this.entities = networkManager.getEntityManager().getEntities();
@@ -33,28 +33,42 @@ public class ClientConnection extends Thread {
     @Override
     public void run() {
         try {
-            this.dataInputStream = new DataInputStream(socket.getInputStream());
             this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            this.dataInputStream = new DataInputStream(socket.getInputStream());
 
-            this.objectInputStream = new ObjectInputStream(dataInputStream);
             this.objectOutputStream = new ObjectOutputStream(dataOutputStream);
+            this.objectInputStream = new ObjectInputStream(dataInputStream);
+            this.objectOutputStream.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        while (socket != null && !socket.isClosed() && socket.isConnected()) {
+        while (socket != null && !socket.isClosed() && socket.isConnected() && objectInputStream != null) {
             try {
-                PacketServerUpdate packetServerUpdate = new PacketServerUpdate(
-                        networkManager.getEntityManager().getEntities());
-                packetServerUpdate.readPacket(objectInputStream);
-                Snake newSnake = packetServerUpdate.getSnake();
-                for (int i = 0; i < entities.size(); i++) {
-                    if (entities.get(i).getUUID().equals(newSnake.getUUID())) {
-                        entities.set(i, newSnake);
+//                PacketServerUpdate packetServerUpdate = new PacketServerUpdate(clientSnake);
+//                packetServerUpdate.readPacket(objectInputStream);
+//                this.clientSnake = packetServerUpdate.getSnake();
+//                for (int i = 0; i < entities.size(); i++) {
+//                    if (entities.get(i).getUUID().equals(clientSnake.getUUID())) {
+//                        entities.set(i, clientSnake);
+//                    }
+//                }
+
+                PacketSnake packetSnake = new PacketSnake(null);
+                packetSnake.readPacket(objectInputStream);
+
+                if (!entities.contains(packetSnake.getSnake())) {
+                    entities.add(packetSnake.getSnake());
+                } else {
+                    for (int i = 0; i < entities.size(); i++) {
+                        if (entities.get(i).getUUID().equals(packetSnake.getSnake().getUUID())) {
+                            entities.set(i, packetSnake.getSnake());
+                        }
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                return;
             }
         }
     }
@@ -62,8 +76,14 @@ public class ClientConnection extends Thread {
     public void writePacket(Packet packet) {
         try {
             packet.writePacket(objectOutputStream);
+            objectOutputStream.reset();
+            objectOutputStream.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Snake getClientSnake() {
+        return clientSnake;
     }
 }
