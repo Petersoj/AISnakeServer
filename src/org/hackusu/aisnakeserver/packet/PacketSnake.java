@@ -28,6 +28,10 @@ public class PacketSnake extends Packet {
         this.snake = (Snake) objectInputStream.readObject();
     }
 
+    public Snake getSnake() {
+        return snake;
+    }
+
     //    public PacketSnake(ArrayList<Snake> snakes) {
 //        this((Snake) null);
 //        this.snakes = snakes;

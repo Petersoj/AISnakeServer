@@ -26,23 +26,24 @@ public class PacketServerUpdate extends Packet {
     public void writePacket(ObjectOutputStream objectOutputStream) throws Exception {
         super.writePacket(objectOutputStream);
 
-        PacketSnake packetSnake = new PacketSnake(snake);
-        packetSnake.writePacket(objectOutputStream);
+
+        // Write Entities list size
+        objectOutputStream.writeInt(entities.size());
+
+        // Write Entities
+        for (Entity entity : entities) {
+            objectOutputStream.writeObject(entity);
+        }
     }
 
     @Override
     public void readPacket(ObjectInputStream objectInputStream) throws Exception {
-        super.readPacket(objectInputStream);
+        PacketSnake packetSnake = new PacketSnake(null);
+        packetSnake.readPacket(objectInputStream);
+        this.snake = packetSnake.getSnake();
+    }
 
-        // Read Entities list size
-        int entitiesListSize = objectInputStream.readInt();
-
-        // Read entities
-        for (int i = 0; i < entitiesListSize; i++) {
-            Entity entity = (Entity) objectInputStream.readObject();
-            for (int j = 0; j < entitiesListSize; j++) {
-                entities.set(j, entity);
-            }
-        }
+    public Snake getSnake() {
+        return snake;
     }
 }

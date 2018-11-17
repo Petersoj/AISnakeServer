@@ -13,6 +13,7 @@ public class Snake extends Entity implements Serializable {
     private Direction direction;
     private ArrayList<Point> trail;
     private Color color;
+    private int tailLength;
 
     public Snake(int x, int y, UUID uuid, Color color) {
         super(uuid, x, y);
@@ -42,6 +43,14 @@ public class Snake extends Entity implements Serializable {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public int getTailLength() {
+        return tailLength;
+    }
+
+    public void setTailLength(int tailLength) {
+        this.tailLength = tailLength;
     }
 
     public enum Direction implements Serializable {

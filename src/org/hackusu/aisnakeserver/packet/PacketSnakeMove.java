@@ -18,17 +18,17 @@ public class PacketSnakeMove extends Packet {
     public void writePacket(ObjectOutputStream objectOutputStream) throws Exception {
         super.writePacket(objectOutputStream);
 
-        // Write UUID
-        objectOutputStream.writeObject(snake.getUUID());
-
-        // Write Direction
-        objectOutputStream.writeObject(snake.getDirection());
+        // Server should never send a PacketSnakeMove
     }
 
     @Override
     public void readPacket(ObjectInputStream objectInputStream) throws Exception {
         super.readPacket(objectInputStream);
 
-        // Server should never send a PacketSnakeMove
+        // Read UUID
+//        UUID snakeUUID = (UUID) objectInputStream.readObject();
+
+        // Read Direction
+//        objectOutputStream.writeObject(snake.getDirection());
     }
 }
