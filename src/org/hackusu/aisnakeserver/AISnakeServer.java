@@ -1,4 +1,4 @@
-package org.hackusu;
+package org.hackusu.aisnakeserver;
 
 public class AISnakeServer {
 
